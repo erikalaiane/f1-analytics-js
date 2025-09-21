@@ -86,8 +86,66 @@ class F1StatsAnalyzer {
     }
 }
 
+//Simulação de API da F1 - retorna Promise
+const simulateF1API = (endpoint, data, delay = 1000) => {
+    return new Promise((resolve, reject) =>{
+        setTimeout(() => {
+            if(Math.random() > 0.2) { //80% de chance de sucesso pq 1.0 é 100% =D
+                resolve({
+                    success: true, 
+                    endpoint,
+                    data,
+                    timestamp: new Date(),
+                    source: 'F1-API-Simulator'
+                });
+            } else {
+                reject(new Error(`API F1 falhou no endpoint: ${endpoint}`));
+            }
+        }, delay);
+     });
+};
 
-// === TESTES ===
+//função async para busca classificação dos pilotos
+const fetchDriverStandings = async () => {
+    try {
+        console.log('Buscando classificação dos Pilotos...');
+        const mockDrivers = [
+            {name: 'Max Versttappen', team: 'Red Bull', points: 575, wins: 19 },
+            {name: 'Lando Norris', team: 'McLaren', points: 374, wins: 3},
+            {name: 'Charles Leclerc', team: 'Ferrari', points: 356, wins: 2},
+            {name: 'Oscar Piastri', team: 'McLaren', points:292, wins:2}
+        ];
+
+        const response = await simulateF1API('driver-standings', mockDrivers, 800);
+        console.log('Classificação carregada!');
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao carregar classificação:', error.message);
+        return [];
+    }
+};
+
+// função async para buscar as próximas corridas
+const fetchUpcomingRaces = async() => {
+    try {
+        console.log('Buscando próximas corridas...');
+        const mockRaces = [
+            { name: 'GP de Las Vegas', country: 'USA', date: '2024-11-23' },
+            { name: 'GP do Qatar', country: 'Qatar', date: '2024-12-01' },
+            { name: 'GP de Abu Dhabi', country: 'UAE', date: '2024-12-08' }
+        ];
+
+        const response = await simulateF1API('upcoming-races', mockRaces, 500);
+        console.log('Calendário carregado!');
+        return response.data;
+    } catch(error) {
+        console.error('Erro ao carregar calendário:', error.message);
+        return [];
+    }
+};
+
+
+// ===== TESTES =====
 
 const f1 = new F1Analytics();
  console.log("Sistema F1 criado!", f1.races);
@@ -128,3 +186,14 @@ console.log("Vencedores: ", analyzer.getWinners());
 console.log("Classificação: ", analyzer.getDriverStandings());
 
 console.log("Resultados: ", f1.races[0].results);
+
+// Teste das funções async
+console.log('\n=== TESTANDO ASYNC/AWAIT ===');
+
+fetchDriverStandings().then(drivers => { //then = então
+    console.log('Pilotos recebidos:', drivers.length);
+});
+
+fetchUpcomingRaces().then(races => {
+    console.log('Corridas recebidas:', races.length);
+});
