@@ -15,7 +15,7 @@ Este é um projeto educacional para relembrar JavaScript moderno na prática. O 
 - ✅ Array methods (map, filter, reduce)
 - ✅ Error handling com try/catch
 - ✅ Template literals
-- 🔄 Promises e Async/Await (em progresso)
+- ✅ Promises e Async/Await (em progresso)
 - ⏳ Módulos ES6
 - ⏳ API integration
 
