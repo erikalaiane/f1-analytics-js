@@ -21,7 +21,7 @@ class F1Analytics {
         };
 
         this.races.push(newRace);
-        console.log(`GP ${name} adicionado ao calendário!`);
+        console.log(`🏁 ${name} adicionado ao calendário!`); 
         return newRace;
     };
 
@@ -44,7 +44,7 @@ class F1Analytics {
         };
 
         race.results.push(result);
-        console.log(`🏆 ${driverName} (#${position}) adicionado ao GP ${race.name}`);
+        console.log(`🏆 ${driverName} (#${position}) adicionado ao ${race.name}`); 
         return result;
     };
 }
@@ -57,15 +57,15 @@ class F1StatsAnalyzer {
 
     //MAP: para transfomar dados
     getRaceNames = () => {
-        return this.races.map(race => `GP ${race.name} (${race.country})`);
+        return this.races.map(race => `${race.name} (${race.country})`); 
     }; 
 
     //FILTER: para filtrar vencedores
     getWinners = () => {
         return this.races
-        .filter(race => race.results.length > 0)
-        .map(race => race.results.find(r => r.position === 1))
-        .filter(winner => winner !== undefined);
+        .filter(race => race.results.length > 0) // apenas corrida que tem resultado
+        .map(race => race.results.find(r => r.position === 1)) //pegar apenas o primeiro colocado
+        .filter(winner => winner !== undefined); //remover casos onde não achou 1º colocado
     }; 
 
     //REDUCE: para somar pontos por piloto
@@ -82,7 +82,7 @@ class F1StatsAnalyzer {
             if (result.position === 1) standings[driver].wins++;
 
             return standings;
-        }, {});
+        }, {}); // O valor inicial do acumulador (o {} no final)
     }
 }
 
@@ -95,7 +95,7 @@ const f1 = new F1Analytics();
 
 // teste addRace
 f1.addRace({
-     name: "GP do Brasil",
+     name: "GP do Brasil",  
      country: "Brasil",
      circuit: "Interlagos",
      date: "2024-11-03",
